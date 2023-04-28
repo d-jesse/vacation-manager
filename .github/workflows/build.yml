@@ -1,0 +1,33 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - jesse-sandbox
+
+env:
+  DOCKER_IMAGE_NAME: my-app
+  DOCKER_REGISTRY_PATH: docker.pkg.github.com/${{ github.repository_owner }}/${{ github.repository_name }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write-all
+      packages: write-all
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ env.DOCKER_REGISTRY_PATH }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
+          registry: ${{ env.DOCKER_REGISTRY_PATH }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
