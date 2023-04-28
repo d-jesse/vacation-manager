@@ -13,9 +13,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write-all
-      packages: write-all
+    permissions: write-all
 
     steps:
       - name: Checkout code
