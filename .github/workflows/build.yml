@@ -6,8 +6,8 @@ on:
       - main
 
 env:
-  DOCKER_IMAGE_NAME: my-app
-  DOCKER_REGISTRY_PATH: docker.pkg.github.com/${{ github.repository_owner }}/${{ github.repository_name }}
+  DOCKER_IMAGE_NAME: vacation-manager
+  DOCKER_REGISTRY_PATH: docker.pkg.github.com/${{ github.repository_owner }}
 
 jobs:
   build-and-push:
