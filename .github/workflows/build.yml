@@ -3,7 +3,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - jesse-sandbox
+      - main
 
 env:
   DOCKER_IMAGE_NAME: my-app
