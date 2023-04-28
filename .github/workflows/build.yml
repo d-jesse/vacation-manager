@@ -1,31 +1,61 @@
-name: Build and Push Docker Image
+name: Build and Release React App
 
 on:
   push:
     branches:
       - main
 
-env:
-  DOCKER_IMAGE_NAME: vacation-manager
-  DOCKER_REGISTRY_PATH: docker.pkg.github.com/${{ github.repository_owner }}
-
 jobs:
-  build-and-push:
+  build-and-release:
     runs-on: ubuntu-latest
 
-    permissions: write-all
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: ${{ env.DOCKER_REGISTRY_PATH }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
-          registry: ${{ env.DOCKER_REGISTRY_PATH }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Build app
+      run: npm run build
+      
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.sha }}
+        release_name: Release ${{ github.sha }}
+        body: Automated release from workflow
+        draft: false
+        prerelease: false
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: my-app
+        path: build
+        
+    - name: Get artifact URL
+      id: artifact_url
+      run: echo "::set-output name=url::$(echo ${GITHUB_SERVER_URL}/${{ github.repository }}/releases/download/${{ steps.create_release.outputs.id }}/my-app.tar.gz)"
+      
+    - name: Comment artifact URL
+      uses: actions/github-script@v4
+      with:
+        script: |
+          const payload = {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.payload.pull_request.number,
+            body: `Artifact URL: ${steps.artifact_url.outputs.url}`
+          };
+          return github.issues.createComment(payload);
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 
