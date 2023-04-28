@@ -46,16 +46,3 @@ jobs:
       id: artifact_url
       run: echo "::set-output name=url::$(echo ${GITHUB_SERVER_URL}/${{ github.repository }}/releases/download/${{ steps.create_release.outputs.id }}/my-app.tar.gz)"
       
-    - name: Comment artifact URL
-      uses: actions/github-script@v4
-      with:
-        script: |
-          const payload = {
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.payload.pull_request.number,
-            body: `Artifact URL: ${steps.artifact_url.outputs.url}`
-          };
-          return github.issues.createComment(payload);
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-
