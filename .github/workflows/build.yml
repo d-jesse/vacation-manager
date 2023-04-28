@@ -39,7 +39,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: my-app
+        name: vacation-manager-${{ github.run_number}}
         path: build
         
     - name: Get artifact URL
