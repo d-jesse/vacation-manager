@@ -24,7 +24,7 @@ jobs:
         context: .
         file: frontend/Dockerfile
         push: true
-        tags: ghcr.io/<username>/<repository>:latest
+        tags: ghcr.io/d-jesse/vacation-manager:latest
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
