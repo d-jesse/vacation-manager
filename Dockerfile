@@ -18,7 +18,7 @@ RUN npm run build
 
 # Serve the application with a static file server
 RUN npm install -g serve
-CMD serve -s build
+CMD serve -s build -p 3000
 
 # Expose the port that the application will listen on
-EXPOSE 5000
+EXPOSE 3000
