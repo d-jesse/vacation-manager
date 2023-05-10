@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "vaction manager backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d-jesse/vacation-manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/d-jesse/vacation-manager/issues"
+  },
+  "homepage": "https://github.com/d-jesse/vacation-manager#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sequelize": "^6.31.1"
+  }
+}
